@@ -1,0 +1,1113 @@
+/* ==========================================================================
+   1. CSS VARIABLES & THEME PALETTES (Lucky Crimson, Peach-Gold & Starlight)
+   ========================================================================== */
+:root {
+  --font-serif: 'Cormorant Garamond', 'Padauk', serif;
+  --font-sans: 'Plus Jakarta Sans', 'Padauk', sans-serif;
+
+  /* Shared Festive Accents (From guguhome theme) */
+  --crimson-primary: #EF4444;
+  --crimson-deep: #DC2626;
+  --peach-light: #FEF2F2;
+  --gold-warm: #FFFBEB;
+  --gold-accent: #F59E0B;
+  --gold-glow: #FDE68A;
+  --border-soft: rgba(254, 202, 202, 0.35);
+
+  /* Smooth Spring Curves */
+  --spring-easing: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--peach-light);
+  user-select: none;
+  background-color: #0d060a;
+}
+
+/* Dynamic Background Atmosphere Transitions */
+body {
+  position: relative;
+  transition: background 0.9s var(--spring-easing);
+}
+
+/* Part 1: Cozy Crimson-Pine Winter Night */
+body[data-scene="christmas"] {
+  background: radial-gradient(circle at 50% 18%, #3b0d16 0%, #1a0910 52%, #090408 100%);
+}
+
+/* Part 2: Deep Ocean Starlight Sky */
+body[data-scene="newyear"] {
+  background: radial-gradient(circle at 50% 15%, #17153B 0%, #0B0B1E 55%, #05050F 100%);
+}
+
+/* ==========================================================================
+   2. FULLSCREEN CANVAS & SUNRISE OVERLAY
+   ========================================================================== */
+#skyCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sunrise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(23, 21, 59, 0.2) 0%,
+    rgba(239, 68, 68, 0.28) 45%,
+    rgba(254, 242, 242, 0.85) 82%,
+    #FFFBEB 100%
+  );
+  transition: opacity 2.5s ease-in-out;
+}
+
+.sunrise-overlay.visible {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   3. TOP NAVIGATION & GPU-SMOOTH CHAPTER SWITCHER
+   ========================================================================== */
+.top-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 251, 235, 0.1);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--peach-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--spring-easing), background 0.25s ease;
+}
+
+.nav-btn:hover {
+  background: rgba(255, 251, 235, 0.18);
+  transform: translateY(-1px);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+/* Dual Chapter Switcher Container */
+.chapter-switcher {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(15, 8, 14, 0.65);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Sliding Active Pill (GPU Accelerated) */
+.switcher-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--crimson-primary) 0%, var(--crimson-deep) 100%);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45);
+  transform: translate3d(0%, 0, 0);
+  transition: transform 0.5s var(--spring-easing), background 0.5s ease;
+  will-change: transform;
+  z-index: 0;
+}
+
+body[data-scene="newyear"] .switcher-pill {
+  transform: translate3d(100%, 0, 0);
+  background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.45);
+}
+
+.switch-tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(254, 242, 242, 0.68);
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.35s ease;
+  white-space: nowrap;
+}
+
+.switch-tab.active {
+  color: #FFFBEB;
+}
+
+/* ==========================================================================
+   4. SCENE VIEWPORT & SMOOTH CROSS-DISSOLVE PANELS
+   ========================================================================== */
+.stage-viewport {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 74px 16px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.scene-panel {
+  position: absolute;
+  inset: 68px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 14px, 0) scale(0.985);
+  transition:
+    opacity 0.55s var(--spring-easing),
+    transform 0.55s var(--spring-easing),
+    visibility 0.55s;
+  will-change: opacity, transform;
+}
+
+.scene-panel::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.scene-panel.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Auto-Compact Header when inside Stage 2 (Christmas Tree) */
+.glass-header-card {
+  transition: padding 0.4s var(--spring-easing), margin 0.4s var(--spring-easing);
+  flex-shrink: 0;
+}
+
+.glass-header-card.compact {
+  padding: 10px 16px;
+  margin-bottom: 4px;
+}
+
+.glass-header-card.compact .scene-subtitle,
+.glass-header-card.compact .countdown-grid {
+  display: none;
+}
+
+.glass-header-card.compact .scene-title {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.glass-header-card.compact .badge-row {
+  margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   5. GLASS HEADER & COUNTDOWN CARDS
+   ========================================================================== */
+.glass-header-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 16px 20px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(254, 242, 242, 0.12) 0%, rgba(255, 251, 235, 0.05) 100%);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  text-align: center;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+}
+
+.badge-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 4px 8px;
+  border-radius: 999px;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(254, 202, 202, 0.3);
+  margin-bottom: 8px;
+}
+
+.secret-dev-trigger {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+  transition: transform 0.2s ease;
+}
+
+.secret-dev-trigger:active {
+  transform: scale(1.3);
+}
+
+.season-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-glow);
+}
+
+.scene-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--gold-warm);
+  letter-spacing: 0.01em;
+  margin-bottom: 4px;
+}
+
+.scene-subtitle {
+  font-size: 0.82rem;
+  color: rgba(254, 242, 242, 0.78);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+/* Countdown Timer Boxes */
+.countdown-grid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: rgba(10, 5, 10, 0.42);
+  border: 1px solid rgba(254, 202, 202, 0.2);
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+}
+
+.time-box span {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #FFFBEB;
+  font-variant-numeric: tabular-nums;
+}
+
+.time-box small {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(254, 202, 202, 0.75);
+}
+
+.time-colon {
+  font-weight: 700;
+  color: var(--gold-glow);
+  opacity: 0.7;
+  transform: translateY(-4px);
+}
+
+/* ==========================================================================
+   6. INTERACTIVE STAGE AREA & TOAST NOTIFICATION
+   ========================================================================== */
+.interactive-stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.stage-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 24px;
+  border-radius: 24px;
+  background: rgba(255, 251, 235, 0.05);
+  border: 1px dashed rgba(254, 202, 202, 0.3);
+  text-align: center;
+  max-width: 320px;
+}
+
+.lock-orb {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  background: radial-gradient(circle, rgba(253, 230, 138, 0.25), rgba(239, 68, 68, 0.15));
+  border: 1px solid rgba(253, 230, 138, 0.4);
+  box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
+}
+
+/* Toast Notification */
+.toast-msg {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translate3d(-50%, 20px, 0);
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(20, 10, 18, 0.9);
+  border: 1px solid var(--gold-glow);
+  color: var(--gold-warm);
+  font-size: 0.82rem;
+  font-weight: 500;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s var(--spring-easing);
+}
+
+.toast-msg.show {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 10px 12px;
+  }
+  .nav-btn span {
+    display: none;
+  }
+  .switch-tab {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  .glass-header-card {
+    padding: 14px 14px;
+  }
+}
+
+/* ==========================================================================
+   7. PHASE 2: PART 1 CHRISTMAS 3-STAGE JOURNEY (SNOWGLOBE -> TREE -> GIFT)
+   ========================================================================== */
+.xmas-substage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 16px, 0) scale(0.95);
+  transition:
+    opacity 0.55s var(--spring-easing),
+    transform 0.55s var(--spring-easing),
+    visibility 0.55s;
+}
+
+.xmas-substage.active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+  padding: 8px 0 28px;
+}
+
+/* --- STAGE 1: GLASS SNOWGLOBE --- */
+.snowglobe-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.4s var(--spring-easing);
+}
+
+.snowglobe-wrapper:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.snowglobe-wrapper.shake {
+  animation: globeShake 0.65s ease-in-out;
+}
+
+.snowglobe-wrapper.zoom-into-tree {
+  transform: scale(1.45);
+  opacity: 0;
+  transition: transform 0.65s var(--spring-easing), opacity 0.55s ease;
+}
+
+@keyframes globeShake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-9deg) translateX(-6px); }
+  40% { transform: rotate(9deg) translateX(6px); }
+  60% { transform: rotate(-6deg) translateX(-4px); }
+  80% { transform: rotate(5deg) translateX(3px); }
+}
+
+.snowglobe-glass {
+  position: relative;
+  width: 196px;
+  height: 196px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 28%, rgba(255, 251, 235, 0.25), rgba(23, 37, 84, 0.35) 65%, rgba(15, 23, 42, 0.7) 100%);
+  border: 2px solid rgba(254, 242, 242, 0.55);
+  box-shadow:
+    inset 0 0 28px rgba(253, 230, 138, 0.3),
+    0 14px 36px rgba(0, 0, 0, 0.45),
+    0 0 32px rgba(239, 68, 68, 0.22);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.globe-shine {
+  position: absolute;
+  top: 14px;
+  left: 24px;
+  width: 56px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.32);
+  transform: rotate(-28deg);
+  pointer-events: none;
+}
+
+.globe-mini-tree {
+  width: 118px;
+  height: 136px;
+  margin-bottom: 14px;
+  z-index: 2;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+}
+
+.globe-snow-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(180deg, #FFFBEB 0%, #E2E8F0 100%);
+  border-radius: 50% 50% 0 0;
+  z-index: 3;
+}
+
+.globe-inner-snow {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.globe-flake {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #FFFBEB;
+  opacity: 0.85;
+  animation: globeFlakeFall 3.2s linear infinite;
+}
+
+@keyframes globeFlakeFall {
+  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+  20% { opacity: 0.95; }
+  100% { transform: translateY(185px) translateX(12px); opacity: 0.2; }
+}
+
+.snowglobe-base {
+  width: 154px;
+  height: 40px;
+  margin-top: -10px;
+  z-index: 5;
+  border-radius: 12px 12px 20px 20px;
+  background: linear-gradient(180deg, #78350F 0%, #451A03 100%);
+  border: 1px solid rgba(253, 230, 138, 0.45);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+}
+
+.globe-plaque {
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%);
+  color: #451A03;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.stage-hint-pill {
+  margin-top: 14px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: rgba(15, 8, 14, 0.65);
+  border: 1px solid var(--border-soft);
+  font-size: 0.8rem;
+  color: var(--gold-glow);
+  text-align: center;
+}
+
+/* --- STAGE 2: 7-ORNAMENT CHRISTMAS TREE --- */
+.tree-progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(15, 8, 14, 0.6);
+  border: 1px solid var(--border-soft);
+  font-size: 0.78rem;
+  color: var(--gold-glow);
+}
+
+.mini-reset-btn {
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(254, 202, 202, 0.35);
+  background: rgba(255, 251, 235, 0.1);
+  color: var(--peach-light);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.tree-scene-container {
+  position: relative;
+  width: min(260px, 72vw);
+  height: min(300px, 48vh);
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.main-xmas-tree {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.5));
+}
+
+.ornaments-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ornament-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(253, 230, 138, 0.55);
+  background: radial-gradient(circle at 30% 30%, #475569, #1E293B);
+  color: rgba(255, 251, 235, 0.6);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: none; /* Prevent ghost clicks when tree stage is hidden */
+  transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Only allow clicking ornaments when the Tree stage is actually active */
+#xmasStageTree.active .ornament-node {
+  pointer-events: auto;
+}
+
+.ornament-node.is-star-topper {
+  width: 44px;
+  height: 44px;
+  font-size: 1.25rem;
+  border-radius: 50%;
+}
+
+/* Next Active Ornament to Tap */
+.ornament-node.next-up {
+  background: radial-gradient(circle at 30% 30%, #FCA5A5, #EF4444);
+  color: #FFFBEB;
+  border-color: #FDE68A;
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.85), 0 0 30px rgba(245, 158, 11, 0.5);
+  animation: ornamentPulse 1.5s infinite ease-in-out;
+}
+
+/* Lit / Completed Ornament */
+.ornament-node.lit {
+  background: radial-gradient(circle at 30% 30%, #FFFBEB, #F59E0B);
+  color: #451A03;
+  border-color: #FFFBEB;
+  box-shadow: 0 0 20px rgba(253, 230, 138, 0.95);
+}
+
+@keyframes ornamentPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.18); }
+}
+
+/* --- STAGE 3: SINGLE-TAP GIFT BOX UNDER THE TREE --- */
+.under-tree-gift {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translate3d(-50%, 14px, 0) scale(0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--spring-easing), transform 0.5s var(--spring-easing);
+  z-index: 15;
+}
+
+.under-tree-gift.unlocked {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.gift-box-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #FDE68A;
+  background: linear-gradient(135deg, #EF4444 0%, #B91C1C 100%);
+  color: #FFFBEB;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 26px rgba(239, 68, 68, 0.6), 0 0 24px rgba(253, 230, 138, 0.45);
+  animation: giftBounce 1.8s infinite ease-in-out;
+}
+
+@keyframes giftBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.gift-box-emoji {
+  font-size: 1.3rem;
+}
+
+/* ==========================================================================
+   8. SHARED HOLIDAY MODALS (MINI ORNAMENT CARD & MAIN LETTER + VOICE NOTE)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(8, 4, 10, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.glass-modal {
+  position: relative;
+  width: 100%;
+  max-width: 410px;
+  border-radius: 26px;
+  padding: 24px 22px;
+  background: linear-gradient(160deg, rgba(45, 14, 24, 0.94) 0%, rgba(20, 9, 18, 0.96) 100%);
+  border: 1px solid rgba(253, 230, 138, 0.45);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(239, 68, 68, 0.2);
+  text-align: center;
+  transform: translate3d(0, 18px, 0) scale(0.95);
+  transition: transform 0.4s var(--spring-easing);
+}
+
+.modal-backdrop.open .glass-modal {
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.modal-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(253, 230, 138, 0.4);
+  color: var(--gold-glow);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--gold-warm);
+  margin-bottom: 12px;
+}
+
+.mini-photo-frame {
+  width: 100%;
+  max-height: 190px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 251, 235, 0.25);
+  margin-bottom: 12px;
+}
+
+.mini-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-body-text {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--peach-light);
+  margin-bottom: 18px;
+}
+
+.primary-glow-btn {
+  width: 100%;
+  padding: 11px 20px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-glow);
+  background: linear-gradient(135deg, var(--crimson-primary) 0%, var(--crimson-deep) 100%);
+  color: #FFFBEB;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  transition: transform 0.2s ease;
+}
+
+.primary-glow-btn:active {
+  transform: scale(0.97);
+}
+
+/* Main Letter Specifics */
+.main-letter-card {
+  max-width: 460px;
+  text-align: left;
+}
+
+.main-letter-card .modal-badge,
+.main-letter-card .modal-title {
+  display: block;
+  text-align: center;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(254, 202, 202, 0.3);
+  background: rgba(255, 251, 235, 0.08);
+  color: var(--peach-light);
+  cursor: pointer;
+}
+
+/* Voice Player Bar */
+.voice-player-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(10, 5, 10, 0.55);
+  border: 1px solid rgba(253, 230, 138, 0.3);
+  margin-bottom: 14px;
+}
+
+.voice-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #F59E0B, #EF4444);
+  color: #FFFBEB;
+  font-size: 0.85rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.voice-info {
+  flex: 1;
+}
+
+.voice-label {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--gold-glow);
+  margin-bottom: 5px;
+}
+
+.voice-progress-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 251, 235, 0.15);
+  overflow: hidden;
+}
+
+.voice-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #FDE68A, #EF4444);
+  transition: width 0.15s linear;
+}
+
+.voice-time {
+  font-size: 0.72rem;
+  color: rgba(254, 242, 242, 0.7);
+  font-variant-numeric: tabular-nums;
+}
+
+.letter-scroll-body {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 6px;
+  margin-bottom: 16px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--peach-light);
+  white-space: pre-line;
+}
+
+/* ==========================================================================
+   9. PHASE 3: PART 2 NEW YEAR 7-STAR HEART CONSTELLATION & OCEAN HORIZON
+   ========================================================================== */
+.ny-constellation-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 24px;
+}
+
+.ny-progress-bar {
+  margin-bottom: 10px;
+}
+
+.constellation-map {
+  position: relative;
+  width: min(330px, 86vw);
+  height: min(320px, 50vh);
+  min-height: 255px;
+  border-radius: 28px;
+  background: radial-gradient(circle at 50% 35%, rgba(30, 27, 75, 0.55) 0%, rgba(10, 10, 28, 0.78) 100%);
+  border: 1px solid rgba(253, 230, 138, 0.28);
+  box-shadow:
+    inset 0 0 40px rgba(245, 158, 11, 0.12),
+    0 16px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.constellation-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.heart-polygon-fill {
+  fill: url(#heartFillGlow);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.heart-polygon-fill.complete {
+  opacity: 1;
+}
+
+.constellation-line {
+  stroke: url(#heartLineGrad);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: drawStarLine 0.7s forwards ease-out;
+}
+
+@keyframes drawStarLine {
+  to { stroke-dashoffset: 0; }
+}
+
+.stars-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.star-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(253, 230, 138, 0.45);
+  background: radial-gradient(circle, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+  color: rgba(253, 230, 138, 0.65);
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: none; /* Guard against ghost clicks when tab is inactive */
+  transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* Only clickable when New Year panel is active */
+#sceneNewYear.active .star-node {
+  pointer-events: auto;
+}
+
+.star-node.is-core-star {
+  width: 42px;
+  height: 42px;
+  font-size: 1.05rem;
+}
+
+.star-node.next-up {
+  background: radial-gradient(circle, #FFFBEB 0%, #F59E0B 75%);
+  color: #451A03;
+  border-color: #FFFBEB;
+  box-shadow: 0 0 18px rgba(253, 230, 138, 0.95), 0 0 34px rgba(239, 68, 68, 0.6);
+  animation: ornamentPulse 1.5s infinite ease-in-out;
+}
+
+.star-node.connected {
+  background: radial-gradient(circle, #FEF2F2 0%, #EF4444 80%);
+  color: #FFFBEB;
+  border-color: #FDE68A;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.85), 0 0 26px rgba(253, 230, 138, 0.65);
+}
+
+/* Center New Year Letter Button inside Completed Heart */
+.ny-letter-reveal {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translate3d(-50%, 14px, 0) scale(0.85);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 12;
+  transition: opacity 0.55s var(--spring-easing), transform 0.55s var(--spring-easing), visibility 0.55s;
+}
+
+#sceneNewYear.active .ny-letter-reveal.unlocked {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.ny-letter-btn {
+  background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+  white-space: nowrap;
+}
+
+/* Subtle Ocean Horizon at Bottom of Constellation Map */
+.ocean-horizon {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(14, 116, 144, 0.28) 50%, rgba(15, 23, 42, 0.85) 100%);
+  border-top: 1px solid rgba(253, 230, 138, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.horizon-caption {
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(253, 230, 138, 0.72);
+}
