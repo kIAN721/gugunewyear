@@ -489,7 +489,7 @@ if (letterModal) {
    -------------------------------------------------------------------------- */
 const RECAP_2026 = [
   {
-    date: 'Early Chapter • 2026',
+    date: 'July 23, 2026',
     title: 'The Day We Started Talking',
     photo: 'images/recap1.jpg', // Example: 'assets/recap1.jpg'
     caption: 'The quiet little beginning that ended up becoming my favorite part of every single day.'
