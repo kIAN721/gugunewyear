@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GUGUNEWYEAR - COMPLETE ENGINE (SNOWGLOBE, 7 ORNAMENTS, 7-STAR HEART, AUDIO & TELEGRAM)
+   GUGUNEWYEAR - COMPLETE ENGINE (SNOWGLOBE, 7 ORNAMENTS, 7-STAR HEART, 2026 RECAP, AUDIO & TELEGRAM)
    ========================================================================== */
 
 const APP_STATE = {
@@ -12,7 +12,6 @@ const APP_STATE = {
   devOverrideNY: false
 };
 
-// DOM Elements
 const bodyEl = document.body;
 const tabChristmas = document.getElementById('tabChristmas');
 const tabNewYear = document.getElementById('tabNewYear');
@@ -21,7 +20,7 @@ const sceneNewYear = document.getElementById('sceneNewYear');
 const toastMsg = document.getElementById('toastMsg');
 
 /* ==========================================================================
-   1. BUILT-IN WEB AUDIO SYNTHESIZER (CHIMES, SPARKLES & FIREWORKS SFX)
+   1. BUILT-IN WEB AUDIO SYNTHESIZER (CHIMES, SPARKLES & CELEBRATION CHORD)
    ========================================================================== */
 let audioCtx = null;
 
@@ -35,7 +34,6 @@ function initAudioContext() {
   }
 }
 
-// Play magical crystal chime (rising pitches for stars 1 -> 7)
 function playChime(pitchMultiplier = 1) {
   try {
     initAudioContext();
@@ -43,26 +41,19 @@ function playChime(pitchMultiplier = 1) {
 
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-
     osc.type = 'sine';
-    // Base frequency around 523.25 Hz (C5), scaling up nicely
-    const freq = 523.25 * pitchMultiplier;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(523.25 * pitchMultiplier, audioCtx.currentTime);
 
     gain.gain.setValueAtTime(0.22, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
-
     osc.start();
     osc.stop(audioCtx.currentTime + 1.2);
-  } catch (e) {
-    // Audio context restricted or blocked
-  }
+  } catch (e) {}
 }
 
-// Play a soft sparkle burst sound
 function playSparkleSfx() {
   try {
     initAudioContext();
@@ -83,7 +74,6 @@ function playSparkleSfx() {
   } catch (e) {}
 }
 
-// Play a celebratory chord when gift is opened or heart is completed
 function playCelebrationChord() {
   try {
     initAudioContext();
@@ -225,7 +215,6 @@ function updateCountdowns() {
         stageGlobe.classList.add('active');
       }
       if (headerCard) headerCard.classList.remove('compact');
-      if (miniCardModal) miniCardModal.classList.remove('open');
       closeMainLetterModal();
     }
   }
@@ -252,6 +241,7 @@ function updateCountdowns() {
       if (nyHeader) nyHeader.classList.remove('compact');
       if (sunriseEl) sunriseEl.classList.remove('visible');
       closeMainLetterModal();
+      closeRecapModal();
     }
     renderNYConstellation();
   }
@@ -459,132 +449,136 @@ function sendTelegramAlert(eventText) {
 }
 
 /* ==========================================================================
-   7. SHARED MODALS (MINI ORNAMENT/STAR CARD & MAIN LETTER + VOICE NOTE)
+   7. MAIN LETTER MODAL & 2026 RECAP POLAROID TIMELINE MODAL
    ========================================================================== */
-const miniCardModal = document.getElementById('miniCardModal');
-const miniCardBadge = document.getElementById('miniCardBadge');
-const miniCardTitle = document.getElementById('miniCardTitle');
-const miniCardPhotoWrap = document.getElementById('miniCardPhotoWrap');
-const miniCardPhoto = document.getElementById('miniCardPhoto');
-const miniCardText = document.getElementById('miniCardText');
-const miniCardCloseBtn = document.getElementById('miniCardCloseBtn');
-
 const letterModal = document.getElementById('letterModal');
 const letterBadge = document.getElementById('letterBadge');
 const letterTitle = document.getElementById('letterTitle');
 const letterBody = document.getElementById('letterBody');
 const letterCloseX = document.getElementById('letterCloseX');
 const letterDoneBtn = document.getElementById('letterDoneBtn');
-const voicePlayBtn = document.getElementById('voicePlayBtn');
-const voiceLabel = document.getElementById('voiceLabel');
-const voiceProgressFill = document.getElementById('voiceProgressFill');
-const voiceTime = document.getElementById('voiceTime');
-
-let activeVoiceAudio = new Audio();
-
-function openMiniCardModal(item) {
-  miniCardBadge.textContent = item.badge;
-  miniCardTitle.textContent = item.title;
-  miniCardText.textContent = item.text;
-
-  if (item.photo && item.photo.trim() !== '') {
-    miniCardPhoto.src = item.photo;
-    miniCardPhotoWrap.hidden = false;
-  } else {
-    miniCardPhotoWrap.hidden = true;
-  }
-
-  miniCardModal.classList.add('open');
-  miniCardModal.setAttribute('aria-hidden', 'false');
-}
-
-if (miniCardCloseBtn) {
-  miniCardCloseBtn.addEventListener('click', () => {
-    miniCardModal.classList.remove('open');
-    miniCardModal.setAttribute('aria-hidden', 'true');
-  });
-}
 
 function openMainLetterModal(letterData) {
   letterBadge.textContent = letterData.badge;
   letterTitle.textContent = letterData.title;
   letterBody.textContent = letterData.body;
-  voiceLabel.textContent = letterData.voiceLabel || 'Voice Message';
-
-  activeVoiceAudio.pause();
-  voicePlayBtn.textContent = '▶';
-  voiceProgressFill.style.width = '0%';
-  voiceTime.textContent = '0:00';
-
-  if (letterData.voiceSrc && letterData.voiceSrc.trim() !== '') {
-    activeVoiceAudio.src = letterData.voiceSrc;
-  } else {
-    activeVoiceAudio.src = '';
-  }
 
   letterModal.classList.add('open');
   letterModal.setAttribute('aria-hidden', 'false');
 }
 
 function closeMainLetterModal() {
-  activeVoiceAudio.pause();
-  voicePlayBtn.textContent = '▶';
   letterModal.classList.remove('open');
   letterModal.setAttribute('aria-hidden', 'true');
 }
 
 if (letterCloseX) letterCloseX.addEventListener('click', closeMainLetterModal);
 if (letterDoneBtn) letterDoneBtn.addEventListener('click', closeMainLetterModal);
-
-if (voicePlayBtn) {
-  voicePlayBtn.addEventListener('click', () => {
-    initAudioContext();
-    if (!activeVoiceAudio.src || activeVoiceAudio.src === window.location.href) {
-      showToast('🎙️ Add your voice file path to voiceSrc if desired!');
-      return;
-    }
-    if (activeVoiceAudio.paused) {
-      activeVoiceAudio.play();
-      voicePlayBtn.textContent = '⏸';
-    } else {
-      activeVoiceAudio.pause();
-      voicePlayBtn.textContent = '▶';
-    }
+if (letterModal) {
+  letterModal.addEventListener('click', (e) => {
+    if (e.target === letterModal) closeMainLetterModal();
   });
 }
 
-activeVoiceAudio.addEventListener('timeupdate', () => {
-  if (!activeVoiceAudio.duration) return;
-  const pct = (activeVoiceAudio.currentTime / activeVoiceAudio.duration) * 100;
-  voiceProgressFill.style.width = `${pct}%`;
-  const secs = Math.floor(activeVoiceAudio.currentTime % 60);
-  const mins = Math.floor(activeVoiceAudio.currentTime / 60);
-  voiceTime.textContent = `${mins}:${String(secs).padStart(2, '0')}`;
-});
+/* --------------------------------------------------------------------------
+   MANUAL 2026 YEAR RECAP TEMPLATE (ADD OR EDIT AS MANY PHOTOS AS YOU WANT!)
+   - date:    Date or month label (e.g., "Oct 2026")
+   - title:   Short memory title
+   - photo:   Path to your image (e.g., "assets/recap1.jpg"). Leave "" for placeholder.
+   - caption: Description underneath the photo (English or Burmese)
+   -------------------------------------------------------------------------- */
+const RECAP_2026 = [
+  {
+    date: 'Early Chapter • 2026',
+    title: 'The Day We Started Talking',
+    photo: 'images/recap1.jpg', // Example: 'assets/recap1.jpg'
+    caption: 'The quiet little beginning that ended up becoming my favorite part of every single day.'
+  },
+  {
+    date: 'First Meeting • 2026',
+    title: 'The Day We First Met',
+    photo: 'images/recap2.jpg', // Example: 'assets/recap2.jpg'
+    caption: 'Seeing your smile in person for the very first time—something I will never forget.'
+  },
+  {
+    date: 'Nov 2026',
+    title: 'Before Setting Sail',
+    photo: 'images/recap3.jpg', // Example: 'assets/recap3.jpg'
+    caption: 'Thank you for your warmth, your early gift, and every sweet memory before my voyage.'
+  },
+  {
+    date: 'Coming Soon • 2027',
+    title: 'Our Next Chapter Together',
+    photo: 'images/recap4.jpg', // Example: 'assets/recap4.jpg'
+    caption: 'Reserved for our very first 2027 photo together the moment I step back on shore. ❤️'
+  }
+];
 
-activeVoiceAudio.addEventListener('ended', () => {
-  voicePlayBtn.textContent = '▶';
-  voiceProgressFill.style.width = '0%';
-});
+const recapModal = document.getElementById('recapModal');
+const recapTimelineList = document.getElementById('recapTimelineList');
+const recapCloseX = document.getElementById('recapCloseX');
+const recapDoneBtn = document.getElementById('recapDoneBtn');
+
+function renderRecapTimeline() {
+  if (!recapTimelineList) return;
+  recapTimelineList.innerHTML = '';
+
+  RECAP_2026.forEach((item) => {
+    const row = document.createElement('div');
+    row.className = 'recap-item';
+
+    const photoHtml = item.photo && item.photo.trim() !== ''
+      ? `<img src="${item.photo}" alt="${item.title}" loading="lazy" />`
+      : `<div class="polaroid-placeholder"><span>📸</span><small>Memory Photo Slot</small></div>`;
+
+    row.innerHTML = `
+      <span class="recap-star-dot"></span>
+      <article class="polaroid-card">
+        <div class="polaroid-photo-box">${photoHtml}</div>
+        <span class="polaroid-date">${item.date}</span>
+        <h3 class="polaroid-title">${item.title}</h3>
+        <p class="polaroid-caption">${item.caption}</p>
+      </article>
+    `;
+    recapTimelineList.appendChild(row);
+  });
+}
+
+function openRecapModal() {
+  renderRecapTimeline();
+  recapModal.classList.add('open');
+  recapModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeRecapModal() {
+  recapModal.classList.remove('open');
+  recapModal.setAttribute('aria-hidden', 'true');
+}
+
+if (recapCloseX) recapCloseX.addEventListener('click', closeRecapModal);
+if (recapDoneBtn) recapDoneBtn.addEventListener('click', closeRecapModal);
+if (recapModal) {
+  recapModal.addEventListener('click', (e) => {
+    if (e.target === recapModal) closeRecapModal();
+  });
+}
 
 /* ==========================================================================
    8. PART 1: CHRISTMAS ENGINE (SNOWGLOBE -> 7 ORNAMENTS -> GIFT)
    ========================================================================== */
 const XMAS_ORNAMENTS = [
-  { id: 1, badge: '🎄 Ornament #1', title: 'Our Cozy December Warmth', text: 'Even when the winter wind gets chilly, thinking of your smile always feels like sitting beside a warm fireplace.', photo: '', x: 50, y: 74, isStar: false },
-  { id: 2, badge: '🎄 Ornament #2', title: 'My Favorite Gift Every Year', text: 'No matter how many holiday lights shine around the world, having you in my life is still the brightest blessing of all.', photo: '', x: 34, y: 62, isStar: false },
-  { id: 3, badge: '🎄 Ornament #3', title: 'Every Little Laugh With You', text: 'Thank you for every sweet conversation, every silly moment, and for always making my heart feel right at home.', photo: '', x: 66, y: 62, isStar: false },
-  { id: 4, badge: '🎄 Ornament #4', title: 'Across Every Mile & Wave', text: 'Even when I am preparing for the sea or far away, my heart stays anchored right next to you this Christmas.', photo: '', x: 40, y: 45, isStar: false },
-  { id: 5, badge: '🎄 Ornament #5', title: 'A Promise Under the Mistletoe', text: 'I promise to keep building more beautiful memories, more surprises, and more warm chapters for just the two of us.', photo: '', x: 60, y: 45, isStar: false },
-  { id: 6, badge: '🎄 Ornament #6', title: 'Wishing You Peace & Joy', text: 'May your Christmas be filled with cozy rest, your favorite treats, and the certainty that you are deeply loved.', photo: '', x: 50, y: 31, isStar: false },
-  { id: 7, badge: '🌟 The 7th Star Topper', title: 'You Are My Guiding Star, GuGu', text: 'Just like the star on top of the Christmas tree, you guide my heart home. Now look underneath the tree—a special gift is waiting for you!', photo: '', x: 50, y: 11, isStar: true }
+  { id: 1, label: 'Ornament 1', x: 50, y: 74, isStar: false },
+  { id: 2, label: 'Ornament 2', x: 34, y: 62, isStar: false },
+  { id: 3, label: 'Ornament 3', x: 66, y: 62, isStar: false },
+  { id: 4, label: 'Ornament 4', x: 40, y: 45, isStar: false },
+  { id: 5, label: 'Ornament 5', x: 60, y: 45, isStar: false },
+  { id: 6, label: 'Ornament 6', x: 50, y: 31, isStar: false },
+  { id: 7, label: 'Star Topper', x: 50, y: 11, isStar: true }
 ];
 
 const XMAS_MAIN_LETTER = {
   badge: '🎁 Merry Christmas 2026',
   title: 'To My Dearest GuGu ❤️',
-  voiceLabel: 'Listen to my Christmas Voice Message',
-  voiceSrc: '',
   body: `Merry Christmas, my love! 🎄✨\n\nAs you unwrap this gift under our little Christmas tree, I hope you can feel how much thought and love I poured into every corner of this space for you.\n\nThank you for being my safe harbor, my happiness, and my favorite person through every season of 2026. Rest well, stay warm, and get ready—because in just a few days on January 1st, we will look up at the 2027 midnight sky together!\n\nForever yours,\nOneOne ❤️`
 };
 
@@ -614,7 +608,7 @@ function initGlobeInnerSnow() {
 }
 
 if (snowglobeBtn) {
-  snowglobeBtn.addEventListener('click', (e) => {
+  snowglobeBtn.addEventListener('click', () => {
     initAudioContext();
     playSparkleSfx();
     snowglobeBtn.classList.remove('shake');
@@ -667,9 +661,9 @@ function renderXmasOrnaments() {
     btn.style.left = `${item.x}%`;
     btn.style.top = `${item.y}%`;
     btn.innerHTML = item.isStar ? '⭐' : item.id;
-    btn.setAttribute('aria-label', item.badge);
+    btn.setAttribute('aria-label', item.label);
 
-    btn.addEventListener('click', (e) => handleOrnamentTap(index, item, e));
+    btn.addEventListener('click', (e) => handleOrnamentTap(index, e));
     ornamentsLayer.appendChild(btn);
   });
 
@@ -684,7 +678,7 @@ function renderXmasOrnaments() {
   }
 }
 
-function handleOrnamentTap(index, item, event) {
+function handleOrnamentTap(index, event) {
   initAudioContext();
   if (!APP_STATE.xmasUnlocked || !xmasStageTree.classList.contains('active')) return;
 
@@ -693,7 +687,6 @@ function handleOrnamentTap(index, item, event) {
     return;
   }
 
-  // Play ascending crystal chime pitch (1.0 to 1.7)
   playChime(1.0 + index * 0.1);
 
   if (event && event.clientX) {
@@ -705,9 +698,12 @@ function handleOrnamentTap(index, item, event) {
   if (index === XMAS_STATE.litCount) {
     XMAS_STATE.litCount++;
     renderXmasOrnaments();
-  }
 
-  openMiniCardModal(item);
+    if (XMAS_STATE.litCount === 7) {
+      playCelebrationChord();
+      showToast('🎄 Tree is glowing! Tap your Christmas Gift below!');
+    }
+  }
 }
 
 if (xmasGiftBtn) {
@@ -730,35 +726,31 @@ initGlobeInnerSnow();
 renderXmasOrnaments();
 
 /* ==========================================================================
-   9. PART 2: NEW YEAR 7-STAR TRUE HEART CONSTELLATION ENGINE
+   9. PART 2: NEW YEAR 7-STAR SYMMETRICAL CURVED HEART CONSTELLATION
    ========================================================================== */
-// True Heart Perimeter Layout (7 distinct points forming an unmistakable heart silhouette)
 const NY_STARS = [
-  { id: 1, badge: '🌟 Star #1 • Bottom Tip', title: 'Our First Spark of 2027', text: 'Look up at the midnight sky, GuGu. Even when waves and miles are between us, we are always standing under this exact same canopy of stars.', photo: '', x: 50, y: 85 },
-  { id: 2, badge: '🌟 Star #2 • Lower-Left Curve', title: 'Every Memory From 2026', text: 'Thank you for filling my 2026 with warmth, patience, and the sweetest memories I carry with me everywhere I go.', photo: '', x: 22, y: 58 },
-  { id: 3, badge: '🌟 Star #3 • Upper-Left Outer Lobe', title: 'My Compass at Sea', text: 'Mariners used to navigate the ocean by the stars—and you are the only North Star my heart will ever follow home.', photo: '', x: 16, y: 32 },
-  { id: 4, badge: '🌟 Star #4 • Top-Left Arch Peak', title: 'Two Hearts, One Horizon', text: 'Every sunrise I watch over the water is the same sun coming to wake you up and keep you warm.', photo: '', x: 33, y: 16 },
-  { id: 5, badge: '🌟 Star #5 • Center Heart Dip', title: 'A Promise for the New Year', text: 'In 2027, I promise more laughter, more late-night talks, and the sweetest reunion the moment I step back on shore.', photo: '', x: 50, y: 30 },
-  { id: 6, badge: '🌟 Star #6 • Top-Right Arch Peak', title: 'Wishing You a Gentle Year', text: 'May all 365 days of 2027 treat you kindly, keep you healthy, and bring every dream in your heart to life.', photo: '', x: 67, y: 16 },
-  { id: 7, badge: '💖 Star #7 • Final Closing Star', title: 'Happy New Year 2027, My Love!', text: 'You have completed our 7-star heart! Close this card to watch our midnight fireworks and welcome the first sunrise of 2027 together!', photo: '', x: 84, y: 32 }
+  { id: 1, label: 'Star 1', x: 50, y: 84 },
+  { id: 2, label: 'Star 2', x: 20, y: 56 },
+  { id: 3, label: 'Star 3', x: 18, y: 28 },
+  { id: 4, label: 'Star 4', x: 36, y: 16 },
+  { id: 5, label: 'Star 5', x: 64, y: 16 },
+  { id: 6, label: 'Star 6', x: 82, y: 28 },
+  { id: 7, label: 'Star 7', x: 80, y: 56 }
 ];
 
-// Connected perimeter line segments: 1->2->3->4->5->6->7 and looping 7->1
-const HEART_LINE_SEGMENTS = [
-  { from: 0, to: 1 },
-  { from: 1, to: 2 },
-  { from: 2, to: 3 },
-  { from: 3, to: 4 },
-  { from: 4, to: 5 },
-  { from: 5, to: 6 },
-  { from: 6, to: 0 } // Closes the entire heart loop!
+const HEART_CURVE_PATHS = [
+  'M 50 84 Q 32 72 20 56',
+  'M 20 56 Q 10 42 18 28',
+  'M 18 28 Q 25 14 36 16',
+  'M 36 16 Q 46 18 50 32 Q 54 18 64 16',
+  'M 64 16 Q 75 14 82 28',
+  'M 82 28 Q 90 42 80 56',
+  'M 80 56 Q 68 72 50 84'
 ];
 
 const NY_MAIN_LETTER = {
   badge: '🎆 Happy New Year 2027',
   title: 'Under the Same 2027 Sky, GuGu ✨',
-  voiceLabel: 'Listen to my 2027 New Year Voice Message',
-  voiceSrc: '',
   body: `Happy New Year 2027, my dearest GuGu! 🎆🌅\n\nAs our 7-star heart shines in the sky and the first peach-gold dawn of 2027 rises on the horizon, my first wish of the year belongs completely to you.\n\nNo matter where my ship sails this year, every star I see at night and every wave that touches the shore reminds me of coming home to you. Stay happy, stay safe, and know that OneOne loves you endlessly—today, tomorrow, and through all of 2027.\n\nForever yours,\nOneOne ❤️`
 };
 
@@ -769,6 +761,7 @@ const constellationLinesGroup = document.getElementById('constellationLinesGroup
 const heartPolygonFill = document.getElementById('heartPolygonFill');
 const nyProgressText = document.getElementById('nyProgressText');
 const nyLetterReveal = document.getElementById('nyLetterReveal');
+const nyRecapBtn = document.getElementById('nyRecapBtn');
 const nyLetterBtn = document.getElementById('nyLetterBtn');
 const launchFireworkBtn = document.getElementById('launchFireworkBtn');
 const sunriseOverlay = document.getElementById('sunriseOverlay');
@@ -778,23 +771,17 @@ function renderNYConstellation() {
   starsLayer.innerHTML = '';
   constellationLinesGroup.innerHTML = '';
 
-  // Draw SVG lines for each connected segment up to connectedCount
-  for (let i = 0; i < NY_STATE.connectedCount; i++) {
-    if (i >= HEART_LINE_SEGMENTS.length) break;
-    const seg = HEART_LINE_SEGMENTS[i];
-    const sA = NY_STARS[seg.from];
-    const sB = NY_STARS[seg.to];
+  const segmentsToDraw = NY_STATE.connectedCount >= 7
+    ? HEART_CURVE_PATHS.length
+    : Math.max(0, NY_STATE.connectedCount - 1);
 
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', sA.x);
-    line.setAttribute('y1', sA.y);
-    line.setAttribute('x2', sB.x);
-    line.setAttribute('y2', sB.y);
-    line.setAttribute('class', 'constellation-line');
-    constellationLinesGroup.appendChild(line);
+  for (let i = 0; i < segmentsToDraw; i++) {
+    const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    pathEl.setAttribute('d', HEART_CURVE_PATHS[i]);
+    pathEl.setAttribute('class', 'constellation-path');
+    constellationLinesGroup.appendChild(pathEl);
   }
 
-  // Render the 7 Star Nodes
   NY_STARS.forEach((star, index) => {
     const btn = document.createElement('button');
     btn.className = 'star-node';
@@ -809,9 +796,9 @@ function renderNYConstellation() {
     btn.style.left = `${star.x}%`;
     btn.style.top = `${star.y}%`;
     btn.innerHTML = index === 6 ? '💖' : `✦${star.id}`;
-    btn.setAttribute('aria-label', star.badge);
+    btn.setAttribute('aria-label', star.label);
 
-    btn.addEventListener('click', (e) => handleStarTap(index, star, e));
+    btn.addEventListener('click', (e) => handleStarTap(index, e));
     starsLayer.appendChild(btn);
   });
 
@@ -831,7 +818,7 @@ function renderNYConstellation() {
   if (launchFireworkBtn) launchFireworkBtn.hidden = !isAllDone;
 }
 
-function handleStarTap(index, star, event) {
+function handleStarTap(index, event) {
   initAudioContext();
   if (APP_STATE.activeScene !== 'newyear') return;
 
@@ -845,7 +832,6 @@ function handleStarTap(index, star, event) {
     return;
   }
 
-  // Play ascending crystal chime pitch
   playChime(1.0 + index * 0.12);
 
   if (event && event.clientX) {
@@ -863,24 +849,14 @@ function handleStarTap(index, star, event) {
     if (NY_STATE.connectedCount === 1) {
       sendTelegramAlert('🌟 GuGu just started connecting the 2027 Heart Constellation (Star #1)!');
     }
-  }
 
-  openMiniCardModal(star);
-}
-
-// Trigger Grand Finale when closing the 7th Star's modal
-if (miniCardCloseBtn) {
-  miniCardCloseBtn.addEventListener('click', () => {
-    if (
-      APP_STATE.activeScene === 'newyear' &&
-      APP_STATE.nyUnlocked &&
-      NY_STATE.connectedCount >= 7 &&
-      !NY_STATE.finaleTriggered
-    ) {
+    if (NY_STATE.connectedCount >= 7 && !NY_STATE.finaleTriggered) {
       NY_STATE.finaleTriggered = true;
-      trigger2027GrandFinale();
+      setTimeout(() => {
+        trigger2027GrandFinale();
+      }, 350);
     }
-  });
+  }
 }
 
 function trigger2027GrandFinale() {
@@ -905,6 +881,16 @@ if (launchFireworkBtn) {
   });
 }
 
+if (nyRecapBtn) {
+  nyRecapBtn.addEventListener('click', () => {
+    initAudioContext();
+    if (!APP_STATE.nyUnlocked || NY_STATE.connectedCount < 7) return;
+    playSparkleSfx();
+    openRecapModal();
+    sendTelegramAlert('📸 GuGu just opened the 2026 Year Recap Polaroid Timeline!');
+  });
+}
+
 if (nyLetterBtn) {
   nyLetterBtn.addEventListener('click', (e) => {
     initAudioContext();
@@ -916,9 +902,9 @@ if (nyLetterBtn) {
 }
 
 /* ==========================================================================
-   10. BACKGROUND MUSIC (BGM) TOGGLE & AUDIO DUCKING
+   10. BACKGROUND MUSIC (BGM) TOGGLE
    ========================================================================== */
-const BGM_CONFIG = { src: '', normalVolume: 0.5, duckedVolume: 0.12 };
+const BGM_CONFIG = { src: '', normalVolume: 0.5 };
 const bgmAudio = new Audio();
 bgmAudio.loop = true;
 bgmAudio.volume = BGM_CONFIG.normalVolume;
@@ -948,11 +934,12 @@ if (bgmToggle) {
   });
 }
 
-activeVoiceAudio.addEventListener('play', () => { if (isBgmPlaying) bgmAudio.volume = BGM_CONFIG.duckedVolume; });
-activeVoiceAudio.addEventListener('pause', () => { if (isBgmPlaying) bgmAudio.volume = BGM_CONFIG.normalVolume; });
-activeVoiceAudio.addEventListener('ended', () => { if (isBgmPlaying) bgmAudio.volume = BGM_CONFIG.normalVolume; });
-
 // Initialize App
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  initParticles();
+});
+
 resizeCanvas();
 initParticles();
 initSceneFromUrl();

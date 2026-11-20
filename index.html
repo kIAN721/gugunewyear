@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <!-- Interactive Stage Container for Phase 2 (Snowglobe -> 7-Ornament Tree -> Gift Box) -->
+      <!-- Interactive Stage Container (Snowglobe -> 7-Ornament Tree -> Gift Box) -->
       <div class="interactive-stage" id="xmasInteractiveStage">
 
         <!-- STAGE 1: Interactive Glass Snowglobe -->
@@ -115,15 +115,11 @@
           <div class="tree-scene-container">
             <!-- Illustrated SVG Christmas Tree -->
             <svg class="main-xmas-tree" viewBox="0 0 260 310" fill="none">
-              <!-- Warm Backlight Aura -->
               <circle cx="130" cy="155" r="110" fill="url(#treeGlow)" opacity="0.45" />
-              <!-- Tree Trunk -->
               <rect x="114" y="262" width="32" height="34" rx="4" fill="#5C2D16" />
-              <!-- Foliage Layers -->
               <path d="M130 28 L54 118 H206 L130 28Z" fill="#166534" stroke="#FDE68A" stroke-opacity="0.2" stroke-width="1.5" />
               <path d="M130 78 L36 190 H224 L130 78Z" fill="#15803D" stroke="#FDE68A" stroke-opacity="0.2" stroke-width="1.5" />
               <path d="M130 136 L20 266 H240 L130 136Z" fill="#14532D" stroke="#FDE68A" stroke-opacity="0.25" stroke-width="1.5" />
-              <!-- Golden Garland Curves -->
               <path d="M78 106 Q130 128 182 106" stroke="#FDE68A" stroke-width="2" stroke-dasharray="4 4" opacity="0.55" fill="none"/>
               <path d="M56 176 Q130 206 204 176" stroke="#FDE68A" stroke-width="2" stroke-dasharray="4 4" opacity="0.55" fill="none"/>
               <path d="M38 246 Q130 278 222 246" stroke="#FDE68A" stroke-width="2" stroke-dasharray="4 4" opacity="0.55" fill="none"/>
@@ -135,22 +131,20 @@
               </defs>
             </svg>
 
-            <!-- 7 Interactive Ornaments (1-6 Baubles + 7th Star Topper) rendered by JS -->
+            <!-- 7 Interactive Ornaments rendered by JS -->
             <div class="ornaments-layer" id="ornamentsLayer"></div>
+          </div>
 
-            <!-- STAGE 3: Single-Tap Wrapped Gift Box Under the Tree -->
-            <div class="under-tree-gift" id="xmasGiftContainer">
-              <button class="gift-box-btn" id="xmasGiftBtn" aria-label="Unwrap Christmas Gift">
-                <span class="gift-sparkle-ring"></span>
-                <span class="gift-box-emoji" id="giftBoxEmoji">🎁</span>
-                <span class="gift-box-label" id="giftBoxLabel">Tap to Unwrap Your Gift!</span>
-              </button>
-            </div>
+          <!-- STAGE 3: Single-Tap Wrapped Gift Box (Placed cleanly BELOW the tree) -->
+          <div class="under-tree-gift" id="xmasGiftContainer">
+            <button class="gift-box-btn" id="xmasGiftBtn" aria-label="Unwrap Christmas Gift">
+              <span class="gift-box-emoji" id="giftBoxEmoji">🎁</span>
+              <span class="gift-box-label" id="giftBoxLabel">Tap to Unwrap Your Gift!</span>
+            </button>
           </div>
         </div>
 
       </div>
-
     </section>
 
     <!-- ==========================================
@@ -180,7 +174,7 @@
         </div>
       </div>
 
-      <!-- Interactive Stage Container for Phase 3 (7-Star Heart Constellation) -->
+      <!-- Interactive Stage Container (Symmetrical 7-Star Curved Heart Constellation) -->
       <div class="interactive-stage" id="nyInteractiveStage">
         <div class="ny-constellation-stage" id="nyConstellationStage">
           
@@ -199,28 +193,36 @@
                   <stop offset="50%" stop-color="#F59E0B" />
                   <stop offset="100%" stop-color="#EF4444" />
                 </linearGradient>
-                <radialGradient id="heartFillGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#EF4444" stop-opacity="0.32" />
+                <radialGradient id="heartFillGlow" cx="50%" cy="48%" r="50%">
+                  <stop offset="0%" stop-color="#EF4444" stop-opacity="0.34" />
                   <stop offset="70%" stop-color="#F59E0B" stop-opacity="0.12" />
                   <stop offset="100%" stop-color="#F59E0B" stop-opacity="0" />
                 </radialGradient>
               </defs>
-              <polygon id="heartPolygonFill" class="heart-polygon-fill" points="50,85 22,58 16,32 33,16 50,30 67,16 84,32" />
+              <!-- Smooth Curved Heart Glow Fill (Appears when all 7 stars are connected) -->
+              <path id="heartPolygonFill" class="heart-polygon-fill" d="M 50 84 Q 32 72 20 56 Q 10 42 18 28 Q 25 14 36 16 Q 46 18 50 32 Q 54 18 64 16 Q 75 14 82 28 Q 90 42 80 56 Q 68 72 50 84 Z" />
+              <!-- Dynamic Curved Constellation Paths inserted by JS -->
               <g id="constellationLinesGroup"></g>
             </svg>
 
+            <!-- 7 Interactive Star Nodes rendered by JS -->
             <div class="stars-layer" id="starsLayer"></div>
 
+            <!-- Subtle Ocean Horizon at Bottom of Sky Map -->
             <div class="ocean-horizon">
               <span class="horizon-caption">🌊 Under the Same Sky • 2027</span>
             </div>
           </div>
 
-          <!-- Center Finale Button (Placed OUTSIDE the map so it never covers the stars) -->
+          <!-- Finale Action Buttons (Side-by-Side cleanly BELOW the sky map) -->
           <div class="ny-letter-reveal" id="nyLetterReveal">
+            <button class="gift-box-btn ny-recap-btn" id="nyRecapBtn">
+              <span class="gift-box-emoji">📸</span>
+              <span>2026 Recap</span>
+            </button>
             <button class="gift-box-btn ny-letter-btn" id="nyLetterBtn">
               <span class="gift-box-emoji">💌</span>
-              <span id="nyLetterBtnLabel">Open 2027 New Year Letter</span>
+              <span id="nyLetterBtnLabel">2027 New Year Letter</span>
             </button>
           </div>
 
@@ -231,41 +233,33 @@
 
   </main>
 
-  <!-- Mini Wish / Ornament / Star Memory Modal -->
-  <div class="modal-backdrop" id="miniCardModal" aria-hidden="true">
-    <div class="glass-modal mini-wish-card">
-      <div class="modal-badge" id="miniCardBadge">🎄 Ornament #1</div>
-      <h2 class="modal-title" id="miniCardTitle">Warm Holiday Memory</h2>
-      <div class="mini-photo-frame" id="miniCardPhotoWrap" hidden>
-        <img id="miniCardPhoto" src="" alt="Holiday Memory" />
-      </div>
-      <p class="modal-body-text" id="miniCardText"></p>
-      <button class="primary-glow-btn" id="miniCardCloseBtn">Keep Glowing ✨</button>
-    </div>
-  </div>
-
-  <!-- Main Holiday Letter & Voice Note Modal -->
+  <!-- Main Holiday Letter Modal -->
   <div class="modal-backdrop" id="letterModal" aria-hidden="true">
     <div class="glass-modal main-letter-card">
       <button class="modal-close-x" id="letterCloseX" aria-label="Close Letter">✕</button>
       <div class="modal-badge" id="letterBadge">🎁 Merry Christmas, GuGu</div>
       <h2 class="modal-title" id="letterTitle">My Christmas Letter to You</h2>
 
-      <!-- Custom Voice Message Bar -->
-      <div class="voice-player-bar" id="voicePlayerBar">
-        <button class="voice-play-btn" id="voicePlayBtn" aria-label="Play Voice Note">▶</button>
-        <div class="voice-info">
-          <span class="voice-label" id="voiceLabel">Listen to my Christmas Voice Note</span>
-          <div class="voice-progress-track">
-            <div class="voice-progress-fill" id="voiceProgressFill"></div>
-          </div>
-        </div>
-        <span class="voice-time" id="voiceTime">0:00</span>
-      </div>
-
       <div class="letter-scroll-body" id="letterBody"></div>
 
       <button class="primary-glow-btn" id="letterDoneBtn">Close with Love ❤️</button>
+    </div>
+  </div>
+
+  <!-- 2026 Year Recap Modal (Vertical Starlight Polaroid Timeline) -->
+  <div class="modal-backdrop" id="recapModal" aria-hidden="true">
+    <div class="glass-modal recap-modal-card">
+      <button class="modal-close-x" id="recapCloseX" aria-label="Close Recap">✕</button>
+      <div class="modal-badge">✨ Our 2026 Memories</div>
+      <h2 class="modal-title">2026 Year Recap</h2>
+      <p class="recap-subtitle">Every little chapter that led us to 2027</p>
+
+      <!-- Scrollable Vertical Polaroid Timeline populated by JS -->
+      <div class="recap-timeline-scroll">
+        <div class="recap-timeline-list" id="recapTimelineList"></div>
+      </div>
+
+      <button class="primary-glow-btn" id="recapDoneBtn">Back to Our 2027 Sky ✨</button>
     </div>
   </div>
 

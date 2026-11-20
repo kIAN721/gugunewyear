@@ -5,7 +5,6 @@
   --font-serif: 'Cormorant Garamond', 'Padauk', serif;
   --font-sans: 'Plus Jakarta Sans', 'Padauk', sans-serif;
 
-  /* Shared Festive Accents (From guguhome theme) */
   --crimson-primary: #EF4444;
   --crimson-deep: #DC2626;
   --peach-light: #FEF2F2;
@@ -14,7 +13,6 @@
   --gold-glow: #FDE68A;
   --border-soft: rgba(254, 202, 202, 0.35);
 
-  /* Smooth Spring Curves */
   --spring-easing: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -35,7 +33,6 @@ html, body {
   background-color: #0d060a;
 }
 
-/* Dynamic Background Atmosphere Transitions */
 body {
   position: relative;
   transition: background 0.9s var(--spring-easing);
@@ -127,7 +124,6 @@ body[data-scene="newyear"] {
   transform: scale(0.95);
 }
 
-/* Dual Chapter Switcher Container */
 .chapter-switcher {
   position: relative;
   display: grid;
@@ -141,7 +137,6 @@ body[data-scene="newyear"] {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
 }
 
-/* Sliding Active Pill (GPU Accelerated) */
 .switcher-pill {
   position: absolute;
   top: 4px;
@@ -196,7 +191,7 @@ body[data-scene="newyear"] .switcher-pill {
   height: 100%;
   max-width: 860px;
   margin: 0 auto;
-  padding: 74px 16px 24px;
+  padding: 68px 16px 24px;
   display: flex;
   flex-direction: column;
 }
@@ -210,7 +205,7 @@ body[data-scene="newyear"] .switcher-pill {
   justify-content: flex-start;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -223,7 +218,7 @@ body[data-scene="newyear"] .switcher-pill {
 }
 
 .scene-panel::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 .scene-panel.active {
@@ -233,8 +228,20 @@ body[data-scene="newyear"] .switcher-pill {
   transform: translate3d(0, 0, 0) scale(1);
 }
 
-/* Auto-Compact Header when inside Stage 2 (Christmas Tree) */
+/* ==========================================================================
+   5. GLASS HEADER & COUNTDOWN CARDS
+   ========================================================================== */
 .glass-header-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 16px 20px;
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(254, 242, 242, 0.12) 0%, rgba(255, 251, 235, 0.05) 100%);
+  border: 1px solid var(--border-soft);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  text-align: center;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
   transition: padding 0.4s var(--spring-easing), margin 0.4s var(--spring-easing);
   flex-shrink: 0;
 }
@@ -256,22 +263,6 @@ body[data-scene="newyear"] .switcher-pill {
 
 .glass-header-card.compact .badge-row {
   margin-bottom: 4px;
-}
-
-/* ==========================================================================
-   5. GLASS HEADER & COUNTDOWN CARDS
-   ========================================================================== */
-.glass-header-card {
-  width: 100%;
-  max-width: 480px;
-  padding: 16px 20px;
-  border-radius: 24px;
-  background: linear-gradient(145deg, rgba(254, 242, 242, 0.12) 0%, rgba(255, 251, 235, 0.05) 100%);
-  border: 1px solid var(--border-soft);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  text-align: center;
-  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
 }
 
 .badge-row {
@@ -323,7 +314,6 @@ body[data-scene="newyear"] .switcher-pill {
   margin-bottom: 12px;
 }
 
-/* Countdown Timer Boxes */
 .countdown-grid {
   display: inline-flex;
   align-items: center;
@@ -377,32 +367,6 @@ body[data-scene="newyear"] .switcher-pill {
   margin-top: 10px;
 }
 
-.stage-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 28px 24px;
-  border-radius: 24px;
-  background: rgba(255, 251, 235, 0.05);
-  border: 1px dashed rgba(254, 202, 202, 0.3);
-  text-align: center;
-  max-width: 320px;
-}
-
-.lock-orb {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  font-size: 1.6rem;
-  background: radial-gradient(circle, rgba(253, 230, 138, 0.25), rgba(239, 68, 68, 0.15));
-  border: 1px solid rgba(253, 230, 138, 0.4);
-  box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
-}
-
-/* Toast Notification */
 .toast-msg {
   position: fixed;
   bottom: 24px;
@@ -427,24 +391,8 @@ body[data-scene="newyear"] .switcher-pill {
   transform: translate3d(-50%, 0, 0);
 }
 
-@media (max-width: 480px) {
-  .top-nav {
-    padding: 10px 12px;
-  }
-  .nav-btn span {
-    display: none;
-  }
-  .switch-tab {
-    padding: 6px 12px;
-    font-size: 0.78rem;
-  }
-  .glass-header-card {
-    padding: 14px 14px;
-  }
-}
-
 /* ==========================================================================
-   7. PHASE 2: PART 1 CHRISTMAS 3-STAGE JOURNEY (SNOWGLOBE -> TREE -> GIFT)
+   7. PART 1 CHRISTMAS 3-STAGE JOURNEY (SNOWGLOBE -> TREE -> GIFT)
    ========================================================================== */
 .xmas-substage {
   position: absolute;
@@ -472,7 +420,6 @@ body[data-scene="newyear"] .switcher-pill {
   padding: 8px 0 28px;
 }
 
-/* --- STAGE 1: GLASS SNOWGLOBE --- */
 .snowglobe-wrapper {
   display: flex;
   flex-direction: column;
@@ -608,7 +555,6 @@ body[data-scene="newyear"] .switcher-pill {
   text-align: center;
 }
 
-/* --- STAGE 2: 7-ORNAMENT CHRISTMAS TREE --- */
 .tree-progress-bar {
   display: flex;
   align-items: center;
@@ -640,7 +586,7 @@ body[data-scene="newyear"] .switcher-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 
 .main-xmas-tree {
@@ -669,11 +615,10 @@ body[data-scene="newyear"] .switcher-pill {
   display: grid;
   place-items: center;
   cursor: pointer;
-  pointer-events: none; /* Prevent ghost clicks when tree stage is hidden */
+  pointer-events: none;
   transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* Only allow clicking ornaments when the Tree stage is actually active */
 #xmasStageTree.active .ornament-node {
   pointer-events: auto;
 }
@@ -682,10 +627,8 @@ body[data-scene="newyear"] .switcher-pill {
   width: 44px;
   height: 44px;
   font-size: 1.25rem;
-  border-radius: 50%;
 }
 
-/* Next Active Ornament to Tap */
 .ornament-node.next-up {
   background: radial-gradient(circle at 30% 30%, #FCA5A5, #EF4444);
   color: #FFFBEB;
@@ -694,7 +637,6 @@ body[data-scene="newyear"] .switcher-pill {
   animation: ornamentPulse 1.5s infinite ease-in-out;
 }
 
-/* Lit / Completed Ornament */
 .ornament-node.lit {
   background: radial-gradient(circle at 30% 30%, #FFFBEB, #F59E0B);
   color: #451A03;
@@ -707,27 +649,25 @@ body[data-scene="newyear"] .switcher-pill {
   50% { transform: translate(-50%, -50%) scale(1.18); }
 }
 
-/* --- STAGE 3: SINGLE-TAP GIFT BOX UNDER THE TREE --- */
 .under-tree-gift {
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translate3d(-50%, 14px, 0) scale(0.8);
+  margin-top: 8px;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.5s var(--spring-easing), transform 0.5s var(--spring-easing);
-  z-index: 15;
+  transform: translate3d(0, 10px, 0) scale(0.9);
+  transition: opacity 0.55s var(--spring-easing), transform 0.55s var(--spring-easing), visibility 0.55s;
 }
 
-.under-tree-gift.unlocked {
+#xmasStageTree.active .under-tree-gift.unlocked {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
-  transform: translate3d(-50%, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
 .gift-box-btn {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 9px 18px;
@@ -749,23 +689,23 @@ body[data-scene="newyear"] .switcher-pill {
 }
 
 .gift-box-emoji {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 /* ==========================================================================
-   8. SHARED HOLIDAY MODALS (MINI ORNAMENT CARD & MAIN LETTER + VOICE NOTE)
+   8. MAIN HOLIDAY LETTER MODAL & 2026 RECAP POLAROID TIMELINE MODAL
    ========================================================================== */
 .modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 80;
-  background: rgba(8, 4, 10, 0.72);
+  background: rgba(8, 4, 10, 0.74);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
+  padding: 16px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
@@ -779,13 +719,13 @@ body[data-scene="newyear"] .switcher-pill {
 .glass-modal {
   position: relative;
   width: 100%;
-  max-width: 410px;
+  max-width: 460px;
   border-radius: 26px;
   padding: 24px 22px;
   background: linear-gradient(160deg, rgba(45, 14, 24, 0.94) 0%, rgba(20, 9, 18, 0.96) 100%);
   border: 1px solid rgba(253, 230, 138, 0.45);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(239, 68, 68, 0.2);
-  text-align: center;
+  text-align: left;
   transform: translate3d(0, 18px, 0) scale(0.95);
   transition: transform 0.4s var(--spring-easing);
 }
@@ -795,7 +735,9 @@ body[data-scene="newyear"] .switcher-pill {
 }
 
 .modal-badge {
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  margin: 0 auto 10px;
   padding: 4px 12px;
   border-radius: 999px;
   background: rgba(245, 158, 11, 0.2);
@@ -805,7 +747,7 @@ body[data-scene="newyear"] .switcher-pill {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 10px;
+  text-align: center;
 }
 
 .modal-title {
@@ -813,29 +755,31 @@ body[data-scene="newyear"] .switcher-pill {
   font-size: 1.55rem;
   color: var(--gold-warm);
   margin-bottom: 12px;
+  text-align: center;
 }
 
-.mini-photo-frame {
-  width: 100%;
-  max-height: 190px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 2px solid rgba(255, 251, 235, 0.25);
-  margin-bottom: 12px;
-}
-
-.mini-photo-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.modal-body-text {
-  font-size: 0.92rem;
-  line-height: 1.65;
+.modal-close-x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(254, 202, 202, 0.3);
+  background: rgba(255, 251, 235, 0.08);
   color: var(--peach-light);
+  cursor: pointer;
+}
+
+.letter-scroll-body {
+  max-height: 260px;
+  overflow-y: auto;
+  padding-right: 6px;
   margin-bottom: 18px;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--peach-light);
+  white-space: pre-line;
 }
 
 .primary-glow-btn {
@@ -857,100 +801,167 @@ body[data-scene="newyear"] .switcher-pill {
   transform: scale(0.97);
 }
 
-/* Main Letter Specifics */
-.main-letter-card {
-  max-width: 460px;
-  text-align: left;
-}
-
-.main-letter-card .modal-badge,
-.main-letter-card .modal-title {
-  display: block;
-  text-align: center;
-}
-
-.modal-close-x {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(254, 202, 202, 0.3);
-  background: rgba(255, 251, 235, 0.08);
-  color: var(--peach-light);
-  cursor: pointer;
-}
-
-/* Voice Player Bar */
-.voice-player-bar {
+/* --- 2026 RECAP VERTICAL STARLIGHT POLAROID TIMELINE --- */
+.recap-modal-card {
+  max-width: 500px;
+  max-height: 88vh;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: rgba(10, 5, 10, 0.55);
-  border: 1px solid rgba(253, 230, 138, 0.3);
+  flex-direction: column;
+  background: linear-gradient(160deg, rgba(23, 21, 59, 0.96) 0%, rgba(11, 11, 30, 0.98) 100%);
+}
+
+.recap-subtitle {
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(254, 242, 242, 0.72);
+  margin-top: -6px;
   margin-bottom: 14px;
 }
 
-.voice-play-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #F59E0B, #EF4444);
-  color: #FFFBEB;
-  font-size: 0.85rem;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.voice-info {
+.recap-timeline-scroll {
   flex: 1;
-}
-
-.voice-label {
-  display: block;
-  font-size: 0.74rem;
-  color: var(--gold-glow);
-  margin-bottom: 5px;
-}
-
-.voice-progress-track {
-  width: 100%;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(255, 251, 235, 0.15);
-  overflow: hidden;
-}
-
-.voice-progress-fill {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, #FDE68A, #EF4444);
-  transition: width 0.15s linear;
-}
-
-.voice-time {
-  font-size: 0.72rem;
-  color: rgba(254, 242, 242, 0.7);
-  font-variant-numeric: tabular-nums;
-}
-
-.letter-scroll-body {
-  max-height: 220px;
   overflow-y: auto;
-  padding-right: 6px;
-  margin-bottom: 16px;
-  font-size: 0.92rem;
-  line-height: 1.7;
-  color: var(--peach-light);
+  padding: 8px 6px 14px 4px;
+  margin-bottom: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(253, 230, 138, 0.35) transparent;
+}
+
+.recap-timeline-list {
+  position: relative;
+  padding-left: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Vertical Glowing Starlight Line */
+.recap-timeline-list::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 9px;
+  width: 2px;
+  background: linear-gradient(180deg, #FDE68A 0%, #F59E0B 50%, #EF4444 100%);
+  box-shadow: 0 0 10px rgba(253, 230, 138, 0.65);
+  border-radius: 999px;
+}
+
+.recap-item {
+  position: relative;
+}
+
+/* Glowing Star Node on the Timeline */
+.recap-star-dot {
+  position: absolute;
+  left: -27px;
+  top: 16px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFFBEB 0%, #F59E0B 75%);
+  border: 2px solid #FEF2F2;
+  box-shadow: 0 0 12px rgba(253, 230, 138, 0.9);
+  z-index: 2;
+}
+
+/* Cream Polaroid Card */
+.polaroid-card {
+  background: #FFFDF7;
+  color: #1F2937;
+  border-radius: 6px;
+  padding: 10px 10px 16px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45);
+  transition: transform 0.35s var(--spring-easing), box-shadow 0.35s ease;
+}
+
+.recap-item:nth-child(odd) .polaroid-card {
+  transform: rotate(-1.3deg);
+}
+
+.recap-item:nth-child(even) .polaroid-card {
+  transform: rotate(1.3deg);
+}
+
+.polaroid-card:hover,
+.polaroid-card:active {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+}
+
+/* Adaptive Photo Box (Fits any portrait, landscape, or square ratio without cropping) */
+.polaroid-photo-box {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(135deg, #2e1026 0%, #17153B 100%);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.polaroid-photo-box img {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Fixed 4:3 Ratio Only for Empty Placeholders */
+.polaroid-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px;
+  color: rgba(253, 230, 138, 0.85);
+}
+
+.polaroid-placeholder span {
+  display: block;
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.polaroid-placeholder small {
+  font-size: 0.74rem;
+  color: rgba(254, 242, 242, 0.75);
+}
+
+.polaroid-date {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #DC2626;
+  margin-bottom: 3px;
+}
+
+.polaroid-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.polaroid-caption {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: #4B5563;
   white-space: pre-line;
 }
 
 /* ==========================================================================
-   9. PHASE 3: PART 2 NEW YEAR 7-STAR HEART CONSTELLATION & OCEAN HORIZON
+   9. PART 2 NEW YEAR 7-STAR SYMMETRICAL HEART CONSTELLATION
    ========================================================================== */
 .ny-constellation-stage {
   position: relative;
@@ -959,7 +970,7 @@ body[data-scene="newyear"] .switcher-pill {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 6px 0 24px;
+  padding: 6px 0 28px;
 }
 
 .ny-progress-bar {
@@ -999,14 +1010,15 @@ body[data-scene="newyear"] .switcher-pill {
   opacity: 1;
 }
 
-.constellation-line {
+.constellation-path {
+  fill: none;
   stroke: url(#heartLineGrad);
-  stroke-width: 1.4;
+  stroke-width: 1.8;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 6px rgba(253, 230, 138, 0.8));
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: drawStarLine 0.7s forwards ease-out;
+  filter: drop-shadow(0 0 6px rgba(253, 230, 138, 0.85));
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: drawStarLine 0.75s forwards ease-out;
 }
 
 @keyframes drawStarLine {
@@ -1023,30 +1035,29 @@ body[data-scene="newyear"] .switcher-pill {
 .star-node {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border: 1.5px solid rgba(253, 230, 138, 0.45);
   background: radial-gradient(circle, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
   color: rgba(253, 230, 138, 0.65);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 700;
   display: grid;
   place-items: center;
   cursor: pointer;
-  pointer-events: none; /* Guard against ghost clicks when tab is inactive */
+  pointer-events: none;
   transition: transform 0.3s var(--spring-easing), box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* Only clickable when New Year panel is active */
 #sceneNewYear.active .star-node {
   pointer-events: auto;
 }
 
 .star-node.is-core-star {
-  width: 42px;
-  height: 42px;
-  font-size: 1.05rem;
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
 }
 
 .star-node.next-up {
@@ -1064,16 +1075,18 @@ body[data-scene="newyear"] .switcher-pill {
   box-shadow: 0 0 16px rgba(239, 68, 68, 0.85), 0 0 26px rgba(253, 230, 138, 0.65);
 }
 
-/* Center New Year Letter Button inside Completed Heart */
+/* Side-by-Side Finale Action Buttons positioned cleanly BELOW the sky map */
 .ny-letter-reveal {
-  position: absolute;
-  left: 50%;
-  bottom: 34px;
-  transform: translate3d(-50%, 14px, 0) scale(0.85);
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  z-index: 12;
+  transform: translate3d(0, 10px, 0) scale(0.9);
   transition: opacity 0.55s var(--spring-easing), transform 0.55s var(--spring-easing), visibility 0.55s;
 }
 
@@ -1081,7 +1094,13 @@ body[data-scene="newyear"] .switcher-pill {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translate3d(-50%, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.ny-recap-btn {
+  background: linear-gradient(135deg, #6366F1 0%, #EC4899 100%);
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45), 0 0 20px rgba(253, 230, 138, 0.35);
+  white-space: nowrap;
 }
 
 .ny-letter-btn {
@@ -1089,13 +1108,12 @@ body[data-scene="newyear"] .switcher-pill {
   white-space: nowrap;
 }
 
-/* Subtle Ocean Horizon at Bottom of Constellation Map */
 .ocean-horizon {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 28px;
+  height: 26px;
   background: linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(14, 116, 144, 0.28) 50%, rgba(15, 23, 42, 0.85) 100%);
   border-top: 1px solid rgba(253, 230, 138, 0.18);
   display: flex;
@@ -1106,8 +1124,28 @@ body[data-scene="newyear"] .switcher-pill {
 }
 
 .horizon-caption {
-  font-size: 0.66rem;
+  font-size: 0.65rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(253, 230, 138, 0.72);
+}
+
+@media (max-width: 480px) {
+  .top-nav {
+    padding: 10px 12px;
+  }
+  .nav-btn span {
+    display: none;
+  }
+  .switch-tab {
+    padding: 6px 12px;
+    font-size: 0.78rem;
+  }
+  .glass-header-card {
+    padding: 14px 14px;
+  }
+  .gift-box-btn {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
 }
